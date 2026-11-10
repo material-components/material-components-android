@@ -20,6 +20,8 @@ import com.google.android.material.test.R;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.common.truth.Truth.assertThat;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.Resources;
 import androidx.appcompat.app.AppCompatActivity;
@@ -211,6 +213,39 @@ public class SingleDateSelectorTest {
   }
 
   @Test
+  public void getError_pastingInvalidCharacters_leavesTextEmptyAndSetsError() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_date);
+    EditText editText = textInputLayout.getEditText();
+
+    pasteText(editText, "copy text");
+
+    assertThat(editText.getText().toString()).isEmpty();
+    assertThat(singleDateSelector.getError()).isNotEmpty();
+  }
+
+  @Test
+  public void getError_enteringValidInputAfterInvalidPaste_clearsError() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_date);
+    EditText editText = textInputLayout.getEditText();
+
+    pasteText(editText, "copy text");
+    assertThat(singleDateSelector.getError()).isNotEmpty();
+
+    editText.append("12");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+    assertThat(singleDateSelector.getError()).isNull();
+
+    editText.append("12/2023");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+    assertThat(singleDateSelector.getError()).isNull();
+    assertThat(singleDateSelector.getSelection()).isNotNull();
+  }
+
+  @Test
   public void getSelectedRanges_isEmpty() {
     Calendar calendar = UtcDates.getUtcCalendar();
     calendar.set(2016, Calendar.FEBRUARY, 1);
@@ -358,6 +393,14 @@ public class SingleDateSelectorTest {
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
     assertThat(editText.getSelectionStart()).isEqualTo(editText.getText().length());
+  }
+
+  private void pasteText(EditText editText, String text) {
+    ClipboardManager clipboard = getSystemService(context, ClipboardManager.class);
+    clipboard.setPrimaryClip(ClipData.newPlainText(/* label= */ null, text));
+    editText.requestFocus();
+    editText.onTextContextMenuItem(android.R.id.paste);
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
   }
 
   private View getRootView() {

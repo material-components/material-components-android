@@ -20,6 +20,8 @@ import com.google.android.material.test.R;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.common.truth.Truth.assertThat;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.Resources;
 import androidx.appcompat.app.AppCompatActivity;
@@ -456,6 +458,32 @@ public class RangeDateSelectorTest {
   }
 
   @Test
+  public void getError_pastingInvalidCharacters_setsFieldErrorAndClearsOnValidRange() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    EditText startEditText = startTextInput.getEditText();
+    EditText endEditText = endTextInput.getEditText();
+
+    pasteText(startEditText, "copy text");
+    assertThat(startEditText.getText().toString()).isEmpty();
+    assertThat(startTextInput.getError()).isNotNull();
+    assertThat(endTextInput.getError()).isNull();
+    assertThat(rangeDateSelector.getError()).isNotEmpty();
+
+    startEditText.append("12");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+    assertThat(rangeDateSelector.getError()).isNull();
+
+    startEditText.append("12/2023");
+    endEditText.append("12/13/2023");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+    assertThat(rangeDateSelector.getError()).isNull();
+    assertThat(rangeDateSelector.isSelectionComplete()).isTrue();
+  }
+
+  @Test
   public void getSelectedRanges_fullRange() {
     Calendar setToStart = UtcDates.getUtcCalendar();
     setToStart.set(2004, Calendar.MARCH, 5);
@@ -612,6 +640,14 @@ public class RangeDateSelectorTest {
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
     assertThat(editText.getSelectionStart()).isEqualTo(editText.getText().length());
+  }
+
+  private void pasteText(EditText editText, String text) {
+    ClipboardManager clipboard = getSystemService(context, ClipboardManager.class);
+    clipboard.setPrimaryClip(ClipData.newPlainText(/* label= */ null, text));
+    editText.requestFocus();
+    editText.onTextContextMenuItem(android.R.id.paste);
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
   }
 
   private View getRootView() {

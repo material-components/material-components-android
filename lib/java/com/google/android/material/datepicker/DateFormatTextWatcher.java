@@ -19,14 +19,19 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.KeyListener;
 import android.view.View;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -72,6 +77,11 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
           textLayout.setError(invalidFormat + "\n" + useLine + "\n" + exampleLine);
           onInvalidDate();
         };
+
+    EditText editText = textInputLayout.getEditText();
+    if (editText != null) {
+      addInputFilter(editText, new DateInputFilter(editText));
+    }
   }
 
   abstract void onValidDate(@Nullable Long day);
@@ -80,10 +90,7 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
 
   @Override
   public void onTextChanged(@NonNull CharSequence s, int start, int before, int count) {
-    textInputLayout.removeCallbacks(setErrorCallback);
-    textInputLayout.removeCallbacks(setRangeErrorCallback);
-    textInputLayout.setError(null);
-    onValidDate(null);
+    clearValidationState();
 
     if (TextUtils.isEmpty(s) || s.length() < formatHint.length()) {
       return;
@@ -128,6 +135,20 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
     }
   }
 
+  private void clearValidationState() {
+    textInputLayout.removeCallbacks(setErrorCallback);
+    textInputLayout.removeCallbacks(setRangeErrorCallback);
+    textInputLayout.setError(null);
+    onValidDate(null);
+  }
+
+  private static void addInputFilter(@NonNull EditText editText, @NonNull InputFilter filter) {
+    InputFilter[] current = editText.getFilters();
+    InputFilter[] updated = Arrays.copyOf(current, current.length + 1);
+    updated[current.length] = filter;
+    editText.setFilters(updated);
+  }
+
   private Runnable createRangeErrorCallback(final long milliseconds) {
     return () -> {
       String dateString = DateStrings.getDateString(milliseconds);
@@ -143,5 +164,48 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
 
   public void runValidation(View view, Runnable validation) {
     view.post(validation);
+  }
+
+  /**
+   * Delegates to the EditText's KeyListener InputFilter ahead of time so completely rejected
+   * insertions surface a validation error even when Editable.replace treats them as a no-op and
+   * skips TextWatcher callbacks.
+   */
+  private class DateInputFilter implements InputFilter {
+
+    @NonNull private final EditText editText;
+
+    DateInputFilter(@NonNull EditText editText) {
+      this.editText = editText;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence filter(
+        CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+      // Only inspect insertions on the live buffer (ignores programmatic setText calls).
+      if (end <= start || dstart != dend || dest != editText.getText()) {
+        return null;
+      }
+
+      KeyListener keyListener = editText.getKeyListener();
+      if (!(keyListener instanceof InputFilter)) {
+        return null;
+      }
+
+      CharSequence filtered =
+          ((InputFilter) keyListener).filter(source, start, end, dest, dstart, dend);
+      if (filtered != null && filtered.length() == 0) {
+        if (dest.length() < formatHint.length()) {
+          clearValidationState();
+          runValidation(textInputLayout, setErrorCallback);
+        }
+        // Return a plain empty String so any spans copied onto the filtered CharSequence by
+        // NumberKeyListener do not prevent Editable.replace from short-circuiting.
+        return "";
+      }
+
+      return filtered;
+    }
   }
 }
