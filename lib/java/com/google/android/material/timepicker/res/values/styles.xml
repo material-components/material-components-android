@@ -160,12 +160,7 @@
   <style name="Widget.Material3.MaterialTimePicker.Display" parent="Widget.MaterialComponents.TimePicker.Display">
     <item name="android:textAppearance">@macro/m3_comp_time_picker_time_selector_label_text_type</item>
     <item name="android:textColor">@color/m3_timepicker_display_text_color</item>
-    <item name="android:textSize">@dimen/m3_timepicker_display_text_size</item>
     <item name="chipBackgroundColor">@color/m3_timepicker_display_background_color</item>
-    <item name="chipStartPadding">0dp</item>
-    <item name="textStartPadding">0dp</item>
-    <item name="textEndPadding">0dp</item>
-    <item name="chipEndPadding">0dp</item>
     <item name="rippleColor">@color/m3_timepicker_display_ripple_color</item>
     <item name="shapeAppearance">@macro/m3_comp_time_picker_time_selector_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
@@ -174,7 +169,6 @@
   <style name="Widget.Material3.MaterialTimePicker.Display.Divider" parent="Widget.MaterialComponents.TimePicker.Display.Divider">
     <item name="android:textAppearance">@macro/m3_comp_time_picker_time_selector_separator_type</item>
     <item name="android:textColor">@macro/m3_comp_time_picker_time_selector_separator_color</item>
-    <item name="android:textSize">@dimen/m3_timepicker_display_text_size</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
@@ -191,7 +185,7 @@
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
     <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
     <item name="android:textColor">@macro/m3_comp_time_picker_time_selector_selected_label_text_color</item>
-    <item name="android:textSize">@dimen/m3_timepicker_display_text_size</item>
+    <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
     <item name="android:paddingTop">0dp</item>
     <item name="android:paddingBottom">0dp</item>
     <item name="android:inputType">number</item>
