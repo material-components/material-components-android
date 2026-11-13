@@ -529,6 +529,18 @@ public class MaterialButtonToggleGroup extends MaterialButtonGroup {
     buttonChild.setA11yClassName(getChildrenA11yClassName());
   }
 
+  /**
+   * Returns {@code true} if unchecking {@code button} would be rejected by {@link #checkInternal}
+   * because it is the only checked button and selection is required, so the button can skip the
+   * transient uncheck.
+   */
+  boolean isChildUncheckPrevented(@NonNull MaterialButton button) {
+    return !skipCheckedStateTracker
+        && selectionRequired
+        && checkedIds.size() == 1
+        && checkedIds.contains(button.getId());
+  }
+
   void onButtonCheckedStateChanged(@NonNull MaterialButton button, boolean isChecked) {
     // Checked state change is triggered by the button group, do not update checked ids again.
     if (skipCheckedStateTracker) {

@@ -24,9 +24,14 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.RectF;
+import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
@@ -36,11 +41,14 @@ import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.LooperMode;
 
@@ -418,5 +426,106 @@ public class MaterialButtonToggleGroupTest {
 
     assertThat(((MaterialButton) button1).getA11yClassName())
         .isEqualTo(ToggleButton.class.getName());
+  }
+
+  @Test
+  public void singleSelection_withSelectionRequired_doesNotUncheckChildOnRepeatClick() {
+    toggleGroup.setSingleSelection(true);
+    toggleGroup.setSelectionRequired(true);
+    MaterialButton button = (MaterialButton) toggleGroup.getChildAt(0);
+    List<Boolean> checkedStates = new ArrayList<>();
+    button.addOnCheckedChangeListener((btn, isChecked) -> checkedStates.add(isChecked));
+
+    button.performClick();
+    button.performClick();
+
+    assertThat(checkedStates).containsExactly(true);
+    assertThat(button.isChecked()).isTrue();
+  }
+
+  @Test
+  public void singleSelection_withSelectionRequired_switchesSelectionToAnotherButton() {
+    toggleGroup.setSingleSelection(true);
+    toggleGroup.setSelectionRequired(true);
+    MaterialButton button0 = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton button1 = (MaterialButton) toggleGroup.getChildAt(1);
+
+    button0.performClick();
+    button1.performClick();
+
+    assertThat(button0.isChecked()).isFalse();
+    assertThat(button1.isChecked()).isTrue();
+  }
+
+  @Test
+  public void singleSelection_withSelectionRequired_sendsCheckedEventsWhenSwitchingSelection() {
+    toggleGroup.setSingleSelection(true);
+    toggleGroup.setSelectionRequired(true);
+    MaterialButton button0 = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton button1 = (MaterialButton) toggleGroup.getChildAt(1);
+    button0.performClick();
+    List<Pair<View, Boolean>> checkedEvents = captureCheckedAccessibilityEvents(toggleGroup);
+
+    button1.performClick();
+
+    assertThat(checkedEvents)
+        .containsExactly(Pair.create(button0, false), Pair.create(button1, true))
+        .inOrder();
+  }
+
+  @Test
+  public void singleSelection_withSelectionRequired_doesNotSendCheckedEventOnRepeatClick() {
+    toggleGroup.setSingleSelection(true);
+    toggleGroup.setSelectionRequired(true);
+    MaterialButton button = (MaterialButton) toggleGroup.getChildAt(0);
+    button.performClick();
+    List<Pair<View, Boolean>> checkedEvents = captureCheckedAccessibilityEvents(toggleGroup);
+
+    button.performClick();
+
+    assertThat(checkedEvents).isEmpty();
+  }
+
+  @Test
+  public void singleSelection_doesNotSendCheckedEventWhenChildListenerRevertsCheckedState() {
+    toggleGroup.setSingleSelection(true);
+    MaterialButton button = (MaterialButton) toggleGroup.getChildAt(0);
+    button.addOnCheckedChangeListener((btn, isChecked) -> btn.setChecked(false));
+    List<Pair<View, Boolean>> checkedEvents = captureCheckedAccessibilityEvents(toggleGroup);
+
+    button.performClick();
+
+    assertThat(button.isChecked()).isFalse();
+    assertThat(checkedEvents).isEmpty();
+  }
+
+  /**
+   * Attaches the toggle group to an activity with accessibility enabled, and returns a list that
+   * records each checked content change event sent by its buttons from then on, as a pair of the
+   * button and the checked state reported by the event.
+   */
+  private static List<Pair<View, Boolean>> captureCheckedAccessibilityEvents(
+      MaterialButtonToggleGroup toggleGroup) {
+    Activity activity = Robolectric.buildActivity(Activity.class).setup().get();
+    activity.setContentView(toggleGroup);
+
+    AccessibilityManager accessibilityManager =
+        (AccessibilityManager)
+            toggleGroup.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+    Shadows.shadowOf(accessibilityManager).setEnabled(true);
+
+    List<Pair<View, Boolean>> checkedEvents = new ArrayList<>();
+    toggleGroup.setAccessibilityDelegate(
+        new View.AccessibilityDelegate() {
+          @Override
+          public boolean onRequestSendAccessibilityEvent(
+              ViewGroup host, View child, AccessibilityEvent event) {
+            if (event.getContentChangeTypes() == AccessibilityEvent.CONTENT_CHANGE_TYPE_CHECKED) {
+              checkedEvents.add(Pair.create(child, event.isChecked()));
+            }
+            return false;
+          }
+        });
+    return checkedEvents;
   }
 }

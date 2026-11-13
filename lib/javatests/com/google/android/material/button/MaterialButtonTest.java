@@ -19,11 +19,18 @@ import com.google.android.material.test.R;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION_CODES;
+import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -33,10 +40,14 @@ import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
 /** Tests for {@link com.google.android.material.button.MaterialButton}. */
@@ -231,6 +242,77 @@ public class MaterialButtonTest {
     setIcon(materialButton, makeMeasureSpec(300), drawable);
 
     assertThat(callCount).isEqualTo(1);
+  }
+
+  @Test
+  @Config(sdk = {Config.OLDEST_SDK, VERSION_CODES.R})
+  public void setChecked_sendsCheckedContentChangeEvents() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setCheckable(true);
+    List<AccessibilityEvent> events = captureAccessibilityEvents(materialButton);
+
+    materialButton.setChecked(true);
+    materialButton.setChecked(false);
+
+    assertThat(events).hasSize(2);
+    assertThat(events.get(0).getEventType())
+        .isEqualTo(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
+    assertThat(events.get(0).getContentChangeTypes())
+        .isEqualTo(AccessibilityEvent.CONTENT_CHANGE_TYPE_CHECKED);
+    assertThat(events.get(0).isChecked()).isTrue();
+    assertThat(events.get(1).getEventType())
+        .isEqualTo(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
+    assertThat(events.get(1).getContentChangeTypes())
+        .isEqualTo(AccessibilityEvent.CONTENT_CHANGE_TYPE_CHECKED);
+    assertThat(events.get(1).isChecked()).isFalse();
+  }
+
+  @Test
+  public void setChecked_whenNotImportantForAccessibility_doesNotSendEvent() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setCheckable(true);
+    materialButton.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    List<AccessibilityEvent> events = captureAccessibilityEvents(materialButton);
+
+    materialButton.setChecked(true);
+
+    assertThat(events).isEmpty();
+  }
+
+  @Test
+  public void setChecked_whenListenerRevertsCheckedState_doesNotSendEvent() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setCheckable(true);
+    materialButton.addOnCheckedChangeListener((button, isChecked) -> button.setChecked(false));
+    List<AccessibilityEvent> events = captureAccessibilityEvents(materialButton);
+
+    materialButton.setChecked(true);
+
+    assertThat(materialButton.isChecked()).isFalse();
+    assertThat(events).isEmpty();
+  }
+
+  private static List<AccessibilityEvent> captureAccessibilityEvents(MaterialButton button) {
+    Activity activity = Robolectric.buildActivity(Activity.class).setup().get();
+    FrameLayout host = new FrameLayout(activity);
+    host.addView(button);
+    activity.setContentView(host);
+
+    AccessibilityManager accessibilityManager =
+        (AccessibilityManager) button.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+    Shadows.shadowOf(accessibilityManager).setEnabled(true);
+
+    List<AccessibilityEvent> events = new ArrayList<>();
+    host.setAccessibilityDelegate(
+        new View.AccessibilityDelegate() {
+          @Override
+          public boolean onRequestSendAccessibilityEvent(
+              ViewGroup hostView, View child, AccessibilityEvent event) {
+            events.add(event);
+            return false;
+          }
+        });
+    return events;
   }
 
   private static int makeMeasureSpec(int size) {

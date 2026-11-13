@@ -51,7 +51,9 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.SoundEffectConstants;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.Checkable;
@@ -1743,13 +1745,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private void setCheckedInternal(boolean checked) {
     if (isCheckable() && this.checked != checked) {
+      ViewParent parent = getParent();
+      if (!checked
+          && parent instanceof MaterialButtonToggleGroup
+          && ((MaterialButtonToggleGroup) parent).isChildUncheckPrevented(this)) {
+        return;
+      }
       this.checked = checked;
 
       refreshDrawableState();
 
       // Report checked state change to the parent toggle group, if there is one
-      if (getParent() instanceof MaterialButtonToggleGroup) {
-        ((MaterialButtonToggleGroup) getParent()).onButtonCheckedStateChanged(this, this.checked);
+      if (parent instanceof MaterialButtonToggleGroup) {
+        ((MaterialButtonToggleGroup) parent).onButtonCheckedStateChanged(this, this.checked);
       }
 
       // Avoid infinite recursions if setChecked() is called from a listener
@@ -1762,6 +1770,33 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         listener.onCheckedChanged(this, this.checked);
       }
       broadcasting = false;
+
+      // Notify accessibility services after this button's OnCheckedChangeListeners have run, and
+      // skip the event if one of them reverted the change.
+      if (this.checked == checked) {
+        sendCheckedAccessibilityEvent();
+      }
+    }
+  }
+
+  // CONTENT_CHANGE_TYPE_CHECKED (API 36) is an inlined compile-time int constant, and older
+  // Android versions ignore unknown content change types.
+  @SuppressLint("InlinedApi")
+  private void sendCheckedAccessibilityEvent() {
+    if (!isShown() || !isImportantForAccessibility()) {
+      return;
+    }
+    AccessibilityManager accessibilityManager =
+        (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+    if (accessibilityManager != null && accessibilityManager.isEnabled()) {
+      // AccessibilityEvent(int) was added in API 30; obtain(int) is needed on older API levels.
+      @SuppressWarnings("deprecation")
+      AccessibilityEvent event =
+          VERSION.SDK_INT >= VERSION_CODES.R
+              ? new AccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED)
+              : AccessibilityEvent.obtain(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
+      event.setContentChangeTypes(AccessibilityEvent.CONTENT_CHANGE_TYPE_CHECKED);
+      sendAccessibilityEventUnchecked(event);
     }
   }
 
