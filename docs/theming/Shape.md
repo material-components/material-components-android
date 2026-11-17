@@ -21,7 +21,7 @@ of your app.
 
 ## Design and API Documentation
 
--   [Material Design 3 guidelines: Shape](https://m3.material.io/styles/shape/overview)
+-   [Material Design 3 guidelines: Shape](https://m3.material.io/styles/shape/overview-principles)
 
 ## How it works
 
