@@ -36,7 +36,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /** This class draws the graphics for a loading indicator. */
 public final class LoadingIndicatorDrawable extends Drawable implements Drawable.Callback {
-  AnimatorDurationScaleProvider animatorDurationScaleProvider;
+  @NonNull AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
   @NonNull private final Context context;
   @NonNull private final LoadingIndicatorSpec specs;
@@ -73,7 +73,7 @@ public final class LoadingIndicatorDrawable extends Drawable implements Drawable
     this.specs = specs;
     this.drawingDelegate = drawingDelegate;
     this.animatorDelegate = animatorDelegate;
-    animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
+    this.animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     this.paint = new Paint();
 
@@ -195,13 +195,9 @@ public final class LoadingIndicatorDrawable extends Drawable implements Drawable
   // ******************* Utility functions *******************
 
   private boolean isSystemAnimatorDisabled() {
-    if (animatorDurationScaleProvider != null) {
-      float systemAnimatorDurationScale =
-          animatorDurationScaleProvider.getSystemAnimatorDurationScale(
-              context.getContentResolver());
-      return systemAnimatorDurationScale == 0;
-    }
-    return false;
+    float systemAnimatorDurationScale =
+        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
+    return systemAnimatorDurationScale == 0;
   }
 
   // ******************* Setter and getter *******************
