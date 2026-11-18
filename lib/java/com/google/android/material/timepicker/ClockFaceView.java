@@ -90,7 +90,8 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
 
   private String[] values;
 
-  private float currentHandRotation;
+  private float currentHandDegrees;
+  private float currentHandLevel;
 
   private final ColorStateList textColor;
 
@@ -349,11 +350,14 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
   }
 
   @Override
-  public void onRotate(float rotation, boolean animating) {
-    if (abs(currentHandRotation - rotation) > EPSILON) {
-      currentHandRotation = rotation;
-      findIntersectingTextView();
+  public void onRotate(float degrees, int level, boolean animating) {
+    if (currentHandDegrees == degrees && currentHandLevel == level) {
+      return;
     }
+
+    currentHandDegrees = degrees;
+    currentHandLevel = level;
+    findIntersectingTextView();
   }
 
   @Override
