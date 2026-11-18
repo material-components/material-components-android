@@ -4302,8 +4302,13 @@ abstract class BaseSlider<
       super(source);
       valueFrom = source.readFloat();
       valueTo = source.readFloat();
-      values = new ArrayList<>();
-      source.readList(values, Float.class.getClassLoader());
+      float[] valuesArray = source.createFloatArray();
+      values = new ArrayList<>(valuesArray != null ? valuesArray.length : 0);
+      if (valuesArray != null) {
+        for (float value : valuesArray) {
+          values.add(value);
+        }
+      }
       stepSize = source.readFloat();
       hasFocus = source.createBooleanArray()[0];
     }
@@ -4313,7 +4318,11 @@ abstract class BaseSlider<
       super.writeToParcel(dest, flags);
       dest.writeFloat(valueFrom);
       dest.writeFloat(valueTo);
-      dest.writeList(values);
+      float[] valuesArray = new float[values.size()];
+      for (int i = 0; i < values.size(); i++) {
+        valuesArray[i] = values.get(i);
+      }
+      dest.writeFloatArray(valuesArray);
       dest.writeFloat(stepSize);
       boolean[] booleans = new boolean[1];
       booleans[0] = hasFocus;
