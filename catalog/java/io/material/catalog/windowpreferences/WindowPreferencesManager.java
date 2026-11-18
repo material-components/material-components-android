@@ -18,13 +18,16 @@ package io.material.catalog.windowpreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.Window;
 import android.view.WindowInsets;
+import androidx.activity.ComponentActivity;
+import androidx.activity.EdgeToEdge;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
-import com.google.android.material.internal.EdgeToEdgeUtils;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 /** Helper that saves the current window preferences for the Catalog. */
 public class WindowPreferencesManager {
@@ -64,9 +67,25 @@ public class WindowPreferencesManager {
         .getBoolean(KEY_EDGE_TO_EDGE_ENABLED, VERSION.SDK_INT >= VERSION_CODES.Q);
   }
 
-  @SuppressWarnings("RestrictTo")
   public void applyEdgeToEdgePreference(Window window) {
-    EdgeToEdgeUtils.applyEdgeToEdge(window, isEdgeToEdgeEnabled());
+    boolean dark = (window.getContext().getResources().getConfiguration().uiMode &
+        Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+    WindowInsetsControllerCompat windowInsetsControllerCompat =
+        new WindowInsetsControllerCompat(window, window.getDecorView());
+    if (isEdgeToEdgeEnabled()) {
+      if (window.getContext() instanceof ComponentActivity) {
+        EdgeToEdge.enable((ComponentActivity) window.getContext());
+      } else {
+        window.setNavigationBarColor(0);
+        if (!dark) {
+          windowInsetsControllerCompat.setAppearanceLightNavigationBars(true);
+        }
+      }
+    } else {
+      if (window.getContext() instanceof ComponentActivity) {
+        windowInsetsControllerCompat.setAppearanceLightStatusBars(dark);
+      }
+    }
     ViewCompat.setOnApplyWindowInsetsListener(
         window.getDecorView(), isEdgeToEdgeEnabled() ? listener : null);
   }
