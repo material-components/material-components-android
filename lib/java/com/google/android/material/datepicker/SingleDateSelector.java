@@ -219,7 +219,7 @@ public class SingleDateSelector implements DateSelector<Long> {
         @Override
         public SingleDateSelector createFromParcel(@NonNull Parcel source) {
           SingleDateSelector singleDateSelector = new SingleDateSelector();
-          singleDateSelector.selectedItem = (Long) source.readValue(Long.class.getClassLoader());
+          singleDateSelector.selectedItem = source.readByte() == 0 ? null : source.readLong();
           return singleDateSelector;
         }
 
@@ -237,6 +237,11 @@ public class SingleDateSelector implements DateSelector<Long> {
 
   @Override
   public void writeToParcel(@NonNull Parcel dest, int flags) {
-    dest.writeValue(selectedItem);
+    if (selectedItem == null) {
+      dest.writeByte((byte) 0);
+    } else {
+      dest.writeByte((byte) 1);
+      dest.writeLong(selectedItem);
+    }
   }
 }

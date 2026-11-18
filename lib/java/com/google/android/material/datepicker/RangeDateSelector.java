@@ -352,9 +352,8 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
         @Override
         public RangeDateSelector createFromParcel(@NonNull Parcel source) {
           RangeDateSelector rangeDateSelector = new RangeDateSelector();
-          rangeDateSelector.selectedStartItem =
-              (Long) source.readValue(Long.class.getClassLoader());
-          rangeDateSelector.selectedEndItem = (Long) source.readValue(Long.class.getClassLoader());
+          rangeDateSelector.selectedStartItem = readNullableLong(source);
+          rangeDateSelector.selectedEndItem = readNullableLong(source);
           return rangeDateSelector;
         }
 
@@ -372,7 +371,21 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
   @Override
   public void writeToParcel(@NonNull Parcel dest, int flags) {
-    dest.writeValue(selectedStartItem);
-    dest.writeValue(selectedEndItem);
+    writeNullableLong(dest, selectedStartItem);
+    writeNullableLong(dest, selectedEndItem);
+  }
+
+  private static void writeNullableLong(@NonNull Parcel dest, @Nullable Long value) {
+    if (value == null) {
+      dest.writeByte((byte) 0);
+    } else {
+      dest.writeByte((byte) 1);
+      dest.writeLong(value);
+    }
+  }
+
+  @Nullable
+  private static Long readNullableLong(@NonNull Parcel source) {
+    return source.readByte() == 0 ? null : source.readLong();
   }
 }

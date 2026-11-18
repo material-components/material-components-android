@@ -20,6 +20,7 @@ import static androidx.core.util.Preconditions.checkNotNull;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
+import androidx.core.os.ParcelCompat;
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator;
 import java.util.List;
 
@@ -110,9 +111,9 @@ public final class CompositeDateValidator implements DateValidator {
         @NonNull
         @Override
         public CompositeDateValidator createFromParcel(@NonNull Parcel source) {
-          @SuppressWarnings("unchecked")
           List<DateValidator> validators =
-              source.readArrayList(DateValidator.class.getClassLoader());
+              ParcelCompat.readArrayList(
+                  source, DateValidator.class.getClassLoader(), DateValidator.class);
           int id = source.readInt();
           Operator operator = null;
           if (id == COMPARATOR_ALL_ID) {
