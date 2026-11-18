@@ -132,6 +132,25 @@ public class BadgeDrawableTest {
     assertThat(restoredBadgeDrawable.getBadgeNumberLocale()).isEqualTo(TEST_BADGE_NUMBER_LOCALE);
   }
 
+  @Test
+  public void testSavedState_defaultNullFields() {
+    BadgeState.State emptyState = new BadgeState.State();
+    Parcel parcel = Parcel.obtain();
+    try {
+      emptyState.writeToParcel(parcel, emptyState.describeContents());
+      parcel.setDataPosition(0);
+
+      BadgeState.State restoredState = BadgeState.State.CREATOR.createFromParcel(parcel);
+      BadgeDrawable restoredBadgeDrawable =
+          BadgeDrawable.createFromSavedState(context, restoredState);
+      assertThat(restoredBadgeDrawable.isVisible()).isTrue();
+      assertThat(restoredBadgeDrawable.hasNumber()).isFalse();
+      assertThat(restoredBadgeDrawable.hasText()).isFalse();
+    } finally {
+      parcel.recycle();
+    }
+  }
+
   // Verify that the hardcoded badge gravity attribute values match their piped Gravity counter
   // parts.
   @Test

@@ -701,13 +701,13 @@ public final class BadgeState {
 
     State(@NonNull Parcel in) {
       badgeResId = in.readInt();
-      backgroundColor = (Integer) in.readSerializable();
-      badgeTextColor = (Integer) in.readSerializable();
-      badgeTextAppearanceResId = (Integer) in.readSerializable();
-      badgeShapeAppearanceResId = (Integer) in.readSerializable();
-      badgeShapeAppearanceOverlayResId = (Integer) in.readSerializable();
-      badgeWithTextShapeAppearanceResId = (Integer) in.readSerializable();
-      badgeWithTextShapeAppearanceOverlayResId = (Integer) in.readSerializable();
+      backgroundColor = readNullableInt(in);
+      badgeTextColor = readNullableInt(in);
+      badgeTextAppearanceResId = readNullableInt(in);
+      badgeShapeAppearanceResId = readNullableInt(in);
+      badgeShapeAppearanceOverlayResId = readNullableInt(in);
+      badgeWithTextShapeAppearanceResId = readNullableInt(in);
+      badgeWithTextShapeAppearanceOverlayResId = readNullableInt(in);
       alpha = in.readInt();
       text = in.readString();
       number = in.readInt();
@@ -716,20 +716,21 @@ public final class BadgeState {
       contentDescriptionForText = in.readString();
       contentDescriptionNumberless = in.readString();
       contentDescriptionQuantityStrings = in.readInt();
-      badgeGravity = (Integer) in.readSerializable();
-      badgeHorizontalPadding = (Integer) in.readSerializable();
-      badgeVerticalPadding = (Integer) in.readSerializable();
-      horizontalOffsetWithoutText = (Integer) in.readSerializable();
-      verticalOffsetWithoutText = (Integer) in.readSerializable();
-      horizontalOffsetWithText = (Integer) in.readSerializable();
-      verticalOffsetWithText = (Integer) in.readSerializable();
-      largeFontVerticalOffsetAdjustment = (Integer) in.readSerializable();
-      additionalHorizontalOffset = (Integer) in.readSerializable();
-      additionalVerticalOffset = (Integer) in.readSerializable();
-      isVisible = (Boolean) in.readSerializable();
-      numberLocale = (Locale) in.readSerializable();
-      autoAdjustToWithinGrandparentBounds = (Boolean) in.readSerializable();
-      badgeFixedEdge = (Integer) in.readSerializable();
+      badgeGravity = readNullableInt(in);
+      badgeHorizontalPadding = readNullableInt(in);
+      badgeVerticalPadding = readNullableInt(in);
+      horizontalOffsetWithoutText = readNullableInt(in);
+      verticalOffsetWithoutText = readNullableInt(in);
+      horizontalOffsetWithText = readNullableInt(in);
+      verticalOffsetWithText = readNullableInt(in);
+      largeFontVerticalOffsetAdjustment = readNullableInt(in);
+      additionalHorizontalOffset = readNullableInt(in);
+      additionalVerticalOffset = readNullableInt(in);
+      isVisible = readNullableBoolean(in);
+      String numberLocaleTag = in.readString();
+      numberLocale = numberLocaleTag != null ? Locale.forLanguageTag(numberLocaleTag) : null;
+      autoAdjustToWithinGrandparentBounds = readNullableBoolean(in);
+      badgeFixedEdge = readNullableInt(in);
     }
 
     public static final Creator<State> CREATOR =
@@ -755,13 +756,13 @@ public final class BadgeState {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
       dest.writeInt(badgeResId);
-      dest.writeSerializable(backgroundColor);
-      dest.writeSerializable(badgeTextColor);
-      dest.writeSerializable(badgeTextAppearanceResId);
-      dest.writeSerializable(badgeShapeAppearanceResId);
-      dest.writeSerializable(badgeShapeAppearanceOverlayResId);
-      dest.writeSerializable(badgeWithTextShapeAppearanceResId);
-      dest.writeSerializable(badgeWithTextShapeAppearanceOverlayResId);
+      writeNullableInt(dest, backgroundColor);
+      writeNullableInt(dest, badgeTextColor);
+      writeNullableInt(dest, badgeTextAppearanceResId);
+      writeNullableInt(dest, badgeShapeAppearanceResId);
+      writeNullableInt(dest, badgeShapeAppearanceOverlayResId);
+      writeNullableInt(dest, badgeWithTextShapeAppearanceResId);
+      writeNullableInt(dest, badgeWithTextShapeAppearanceOverlayResId);
       dest.writeInt(alpha);
       dest.writeString(text);
       dest.writeInt(number);
@@ -772,20 +773,51 @@ public final class BadgeState {
       dest.writeString(
           contentDescriptionNumberless != null ? contentDescriptionNumberless.toString() : null);
       dest.writeInt(contentDescriptionQuantityStrings);
-      dest.writeSerializable(badgeGravity);
-      dest.writeSerializable(badgeHorizontalPadding);
-      dest.writeSerializable(badgeVerticalPadding);
-      dest.writeSerializable(horizontalOffsetWithoutText);
-      dest.writeSerializable(verticalOffsetWithoutText);
-      dest.writeSerializable(horizontalOffsetWithText);
-      dest.writeSerializable(verticalOffsetWithText);
-      dest.writeSerializable(largeFontVerticalOffsetAdjustment);
-      dest.writeSerializable(additionalHorizontalOffset);
-      dest.writeSerializable(additionalVerticalOffset);
-      dest.writeSerializable(isVisible);
-      dest.writeSerializable(numberLocale);
-      dest.writeSerializable(autoAdjustToWithinGrandparentBounds);
-      dest.writeSerializable(badgeFixedEdge);
+      writeNullableInt(dest, badgeGravity);
+      writeNullableInt(dest, badgeHorizontalPadding);
+      writeNullableInt(dest, badgeVerticalPadding);
+      writeNullableInt(dest, horizontalOffsetWithoutText);
+      writeNullableInt(dest, verticalOffsetWithoutText);
+      writeNullableInt(dest, horizontalOffsetWithText);
+      writeNullableInt(dest, verticalOffsetWithText);
+      writeNullableInt(dest, largeFontVerticalOffsetAdjustment);
+      writeNullableInt(dest, additionalHorizontalOffset);
+      writeNullableInt(dest, additionalVerticalOffset);
+      writeNullableBoolean(dest, isVisible);
+      dest.writeString(numberLocale != null ? numberLocale.toLanguageTag() : null);
+      writeNullableBoolean(dest, autoAdjustToWithinGrandparentBounds);
+      writeNullableInt(dest, badgeFixedEdge);
+    }
+
+    private static void writeNullableInt(@NonNull Parcel dest, @Nullable Integer value) {
+      if (value == null) {
+        dest.writeByte((byte) 0);
+      } else {
+        dest.writeByte((byte) 1);
+        dest.writeInt(value);
+      }
+    }
+
+    @Nullable
+    private static Integer readNullableInt(@NonNull Parcel in) {
+      return in.readByte() == 0 ? null : in.readInt();
+    }
+
+    private static void writeNullableBoolean(@NonNull Parcel dest, @Nullable Boolean value) {
+      if (value == null) {
+        dest.writeByte((byte) -1);
+      } else {
+        dest.writeByte((byte) (value ? 1 : 0));
+      }
+    }
+
+    @Nullable
+    private static Boolean readNullableBoolean(@NonNull Parcel in) {
+      byte b = in.readByte();
+      if (b == -1) {
+        return null;
+      }
+      return b != 0;
     }
   }
 }
