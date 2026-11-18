@@ -29,6 +29,7 @@ public class CatalogPreferences extends BaseCatalogPreferences {
       new ImmutableList.Builder<CatalogPreference>()
           .addAll(COMMON_PREFERENCES)
           .add(new DynamicColorPreference())
+          .add(new CutoutModePreference())
           .build();
 
   @Override

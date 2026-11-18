@@ -55,10 +55,11 @@ public abstract class DemoActivity extends BaseCatalogActivity {
 
     super.onCreate(bundle);
 
+    WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
     if (shouldApplyEdgeToEdgePreference()) {
-      WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
       windowPreferencesManager.applyEdgeToEdgePreference(getWindow());
     }
+    windowPreferencesManager.applyCutoutModePreference(getWindow());
 
     setContentView(R.layout.cat_demo_activity);
 
