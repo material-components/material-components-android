@@ -17,7 +17,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="material_timepicker_pm">PM</string>
   <string name="material_timepicker_am">AM</string>
-  <string name="material_timepicker_select_time">בחר שעה</string>
+  <string name="material_timepicker_select_time">בחירת שעה</string>
   <string name="material_timepicker_minute">דקה</string>
   <string name="material_timepicker_hour">שעה</string>
   <string name="material_timepicker_minute_error">הדקה חייבת להיות 0 עד 59</string>

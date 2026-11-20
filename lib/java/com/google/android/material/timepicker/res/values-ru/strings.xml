@@ -19,7 +19,7 @@
   <string name="material_timepicker_am">AM</string>
   <string name="material_timepicker_select_time">Выбор времени</string>
   <string name="material_timepicker_minute">Минуты</string>
-  <string name="material_timepicker_hour">Час</string>
+  <string name="material_timepicker_hour">Часы</string>
   <string name="material_timepicker_minute_error">Укажите от 0 до 59 мин.</string>
   <string name="material_timepicker_hour_error">Укажите от 1 до 12 ч.</string>
   <string name="material_timepicker_hour_error_24h">Укажите от 0 до 23 ч.</string>

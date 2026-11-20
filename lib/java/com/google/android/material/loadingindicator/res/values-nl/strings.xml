@@ -15,5 +15,5 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="m3_loading_indicator_content_description">Laden</string>
+  <string name="m3_loading_indicator_content_description">Laden…</string>
 </resources>
