@@ -64,6 +64,12 @@ Element                             | Attribute                                 
 **Background inset start and end**  | `app:backgroundInsetStart`<br/>`app:backgroundInsetEnd`  | `setBackgroundInsetStart`<br/>`setBackgroundInsetEnd`  | `24dp`
 **Background inset top and bottom** | `app:backgroundInsetTop`<br/>`app:backgroundInsetBottom` | `setBackgroundInsetTop`<br/>`setBackgroundInsetBottom` | `80dp`
 
+**Note:** While the soft keyboard is shown, the top and bottom background insets
+of a dialog created with `MaterialAlertDialogBuilder` shrink as needed to fit
+the dialog content into the space left above the keyboard. They are restored
+when the keyboard is hidden. Dialog windows using `adjustPan` are adjusted
+reliably on API 30+.
+
 ### Title attributes
 
 Element        | Attribute                | Related methods                  | Default value

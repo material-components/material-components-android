@@ -162,9 +162,8 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
       ((MaterialShapeDrawable) background).setElevation(decorView.getElevation());
     }
 
-    Drawable insetDrawable = MaterialDialogs.insetDrawable(background, backgroundInsets);
-    window.setBackgroundDrawable(insetDrawable);
-    decorView.setOnTouchListener(new InsetDialogOnTouchListener(alertDialog, backgroundInsets));
+    new VerticalBackgroundInsetsAdjuster(alertDialog, window, background, backgroundInsets)
+        .install();
     return alertDialog;
   }
 
