@@ -24,13 +24,19 @@ import static java.util.Calendar.APRIL;
 import static java.util.Calendar.FEBRUARY;
 import static java.util.Calendar.MARCH;
 import static java.util.Calendar.MONDAY;
+import static java.util.Calendar.NOVEMBER;
+import static java.util.Calendar.OCTOBER;
 import static java.util.Calendar.SUNDAY;
 import static org.junit.Assert.assertEquals;
+import static org.robolectric.Shadows.shadowOf;
 
 import android.content.res.Resources;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityNodeInfo;
 import androidx.annotation.StringRes;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -45,6 +51,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowAccessibilityManager;
 import org.robolectric.shadows.ShadowLooper;
 
 /** Test for {@link com.google.android.material.datepicker.MaterialDatePicker}. */
@@ -277,6 +284,34 @@ public class MaterialDatePickerTest {
         toggle,
         R.string.mtrl_picker_toggle_to_calendar_input_mode,
         R.string.mtrl_picker_toggle_to_calendar_input_mode_tooltip);
+  }
+
+  @Config(sdk = VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Test
+  public void monthNavigation_outOfTouchMode_doesNotAnnounceFirstDay() {
+    // November 2026 starts on a Sunday, so its first grid cell is day 1.
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder()
+            .setStart(Month.create(2026, OCTOBER).timeInMillis)
+            .setEnd(Month.create(2026, NOVEMBER).timeInMillis)
+            .setOpenAt(Month.create(2026, OCTOBER).timeInMillis)
+            .setFirstDayOfWeek(SUNDAY)
+            .build();
+    MaterialCalendar<Long> materialCalendar = startMaterialCalendar(calendarConstraints);
+    ShadowAccessibilityManager accessibilityManager =
+        shadowOf(materialCalendar.requireContext().getSystemService(AccessibilityManager.class));
+    accessibilityManager.setEnabled(true);
+    View nextButton = materialCalendar.requireView().findViewById(R.id.month_navigation_next);
+
+    // Keyboard focus leaves touch mode, like Tab or TalkBack's Action key.
+    nextButton.performAccessibilityAction(AccessibilityNodeInfo.ACTION_FOCUS, null);
+    nextButton.performClick();
+    ShadowLooper.idleMainLooper();
+
+    assertThat(materialCalendar.getCurrentMonth()).isEqualTo(Month.create(2026, NOVEMBER));
+    for (AccessibilityEvent event : accessibilityManager.getSentAccessibilityEvents()) {
+      assertThat(event.getEventType()).isNotEqualTo(AccessibilityEvent.TYPE_VIEW_SELECTED);
+    }
   }
 
   private static MaterialCalendar<Long> startMaterialCalendar(

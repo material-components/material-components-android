@@ -28,6 +28,9 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.view.accessibility.AccessibilityNodeInfo.AccessibilityAction;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import androidx.annotation.NonNull;
@@ -73,7 +76,27 @@ final class MaterialCalendarGridView extends GridView {
             // Stop announcing of row/col information in favor of internationalized day information.
             accessibilityNodeInfoCompat.setCollectionInfo(null);
           }
+
+          @Override
+          public void sendAccessibilityEvent(@NonNull View host, int eventType) {
+            // GridView implicitly selects cell 0 outside touch mode even when unfocused.
+            if (eventType == AccessibilityEvent.TYPE_VIEW_SELECTED && !host.hasFocus()) {
+              return;
+            }
+            super.sendAccessibilityEvent(host, eventType);
+          }
         });
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfoForItem(
+      View view, int position, AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfoForItem(view, position, info);
+    if (!hasFocus()) {
+      // Clear AbsListView's implicit selection state on unfocused grids.
+      info.setSelected(view.isSelected());
+      info.removeAction(AccessibilityAction.ACTION_CLEAR_SELECTION);
+    }
   }
 
   @Override
