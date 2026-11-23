@@ -115,20 +115,69 @@ public class FocusRingDrawable extends DrawableWrapper {
   @NonNull private FocusRingState state;
 
   /**
-   * Wrap the provided drawable with a FocusRingDrawable if focus rings are enabled, otherwise just
-   * return the provided drawable.
+   * Wrap the provided drawable with a FocusRingDrawable if focus rings are enabled and the drawable
+   * does not already have a FocusRingDrawable, otherwise just return the provided drawable.
    *
    * <p>This method of integrating focus rings should be preferred if the drawable is an unbounded
    * ripple drawable (has no layers), because wrapping the ripple will preserve the unbounded-ness.
-   * See {@link #layer(Context, LayerDrawable, MaterialShapeDrawable)} for an alternative method
-   * where the focus ring can be added as a layer instead of wrapping.
+   * See {@link #wrapInner(Context, DrawableWrapper)} for wrapping the child of a {@link
+   * DrawableWrapper} (such as {@link android.graphics.drawable.InsetDrawable}), and {@link
+   * #layer(Context, LayerDrawable, MaterialShapeDrawable)} for an alternative method where the
+   * focus ring can be added as a layer instead of wrapping.
    */
   @Nullable
   public static Drawable wrap(@NonNull Context context, @Nullable Drawable drawable) {
-    if (!shouldUseFocusRing(context)) {
+    if (!shouldUseFocusRing(context) || find(drawable) != null) {
       return drawable;
     }
     return new FocusRingDrawable(context, drawable);
+  }
+
+  /**
+   * Wrap the child drawable of the provided {@link DrawableWrapper} with a {@link
+   * FocusRingDrawable} if focus rings are enabled, otherwise do nothing and return null.
+   *
+   * <p>This method should be preferred over calling {@code
+   * drawableWrapper.setDrawable(FocusRingDrawable.wrap(context, drawableWrapper.getDrawable()))},
+   * because {@link DrawableWrapper#setDrawable(Drawable)} overwrites the child drawable's
+   * transformed bounds (for example, {@link android.graphics.drawable.InsetDrawable} insets) with
+   * the wrapper's outer bounds and clobbers child bounds even when focus rings are disabled.
+   *
+   * @return the inner {@link FocusRingDrawable} if focus rings are enabled and a child drawable is
+   *     present, or {@code null} otherwise.
+   */
+  @CanIgnoreReturnValue
+  @Nullable
+  public static FocusRingDrawable wrapInner(
+      @NonNull Context context, @Nullable DrawableWrapper drawableWrapper) {
+    if (drawableWrapper == null || !shouldUseFocusRing(context)) {
+      return null;
+    }
+    FocusRingDrawable existing = find(drawableWrapper);
+    if (existing != null) {
+      return existing;
+    }
+    Drawable inner = drawableWrapper.getDrawable();
+    if (inner == null) {
+      return null;
+    }
+    existing = find(inner);
+    if (existing != null) {
+      return existing;
+    }
+    drawableWrapper.mutate();
+    inner = drawableWrapper.getDrawable();
+    if (inner == null) {
+      return null;
+    }
+    Rect innerBounds = inner.copyBounds();
+    FocusRingDrawable focusRingDrawable = new FocusRingDrawable(context, inner);
+    drawableWrapper.setDrawable(focusRingDrawable);
+    // DrawableWrapper#setDrawable calls setCallback(null) on the previous child (inner), undoing
+    // the callback set in the FocusRingDrawable constructor.
+    inner.setCallback(focusRingDrawable);
+    focusRingDrawable.setBounds(innerBounds);
+    return focusRingDrawable;
   }
 
   /**
@@ -212,9 +261,10 @@ public class FocusRingDrawable extends DrawableWrapper {
    * Search for and return a FocusRingDrawable if it is either the provided drawable or one level
    * deep in a DrawableWrapper or LayerDrawable.
    *
-   * <p>This is useful for finding a FocusRingDrawable that has been set up with either {@link
-   * #wrap(Context, Drawable)} or {@link #layer(Context, LayerDrawable, MaterialShapeDrawable)}, as
-   * well as the equivalent XML drawable configurations.
+   * <p>This is useful for finding a FocusRingDrawable that has been set up with {@link
+   * #wrap(Context, Drawable)}, {@link #wrapInner(Context, DrawableWrapper)}, or {@link
+   * #layer(Context, LayerDrawable, MaterialShapeDrawable)}, as well as the equivalent XML drawable
+   * configurations.
    */
   @Nullable
   public static FocusRingDrawable find(@Nullable Drawable drawable) {
@@ -245,11 +295,13 @@ public class FocusRingDrawable extends DrawableWrapper {
   }
 
   public FocusRingDrawable(@NonNull Context context, @Nullable Drawable drawable) {
-    super(drawable);
+    super(null);
 
     state = new FocusRingState(null);
     if (drawable != null) {
+      setBounds(drawable.getBounds());
       state.wrappedState = drawable.getConstantState();
+      setDrawable(drawable);
     }
 
     init(context.getTheme());
@@ -605,6 +657,7 @@ public class FocusRingDrawable extends DrawableWrapper {
     a.recycle();
 
     updateLocalState();
+    maybeCalculateShapeAppearanceRoundRectOrPath();
   }
 
   private void updateLocalState() {
@@ -766,6 +819,7 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   public void setFocusRingEnabled(boolean enabled) {
     state.ringEnabled = enabled;
+    maybeCalculateShapeAppearanceRoundRectOrPath();
   }
 
   @ColorInt
@@ -792,6 +846,7 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   public void setFocusRingOuterStrokeWidth(float outerStrokeWidth) {
     state.ringOuterStrokeWidth = outerStrokeWidth;
+    maybeCalculateShapeAppearanceRoundRectOrPath();
   }
 
   public float getFocusRingInnerStrokeWidth() {
@@ -808,6 +863,7 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   public void setFocusRingInset(float inset) {
     state.ringInset = inset;
+    maybeCalculateShapeAppearanceRoundRectOrPath();
   }
 
   public float getFocusRingInnerInset() {
@@ -834,6 +890,7 @@ public class FocusRingDrawable extends DrawableWrapper {
   public void setFocusRingMaterialShapeDrawable(
       @Nullable MaterialShapeDrawable materialShapeDrawable) {
     this.materialShapeDrawable = new WeakReference<>(materialShapeDrawable);
+    maybeCalculateShapeAppearanceRoundRectOrPath();
   }
 
   @Nullable
@@ -843,6 +900,7 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   public void setFocusRingShapeAppearance(@Nullable ShapeAppearance shapeAppearance) {
     state.ringShapeAppearance = shapeAppearance;
+    maybeCalculateShapeAppearanceRoundRectOrPath();
   }
 
   public boolean updateFocusRingShapeAppearanceFromWrappedDrawable() {
@@ -861,6 +919,7 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   public void setFocusRingBounds(@Nullable Rect bounds) {
     state.ringCustomBounds = bounds;
+    maybeCalculateShapeAppearanceRoundRectOrPath();
   }
 
   public void setFocusRingBounds(int left, int top, int right, int bottom) {
@@ -868,6 +927,7 @@ public class FocusRingDrawable extends DrawableWrapper {
       state.ringCustomBounds = new Rect();
     }
     state.ringCustomBounds.set(left, top, right, bottom);
+    maybeCalculateShapeAppearanceRoundRectOrPath();
   }
 
   @NonNull
@@ -932,6 +992,12 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   private float calculateInnerRadius(float outerRadius) {
     return Math.max(0, outerRadius - state.ringOuterStrokeWidth / 2);
+  }
+
+  private void maybeCalculateShapeAppearanceRoundRectOrPath() {
+    if (state.ringEnabled && !getBounds().isEmpty()) {
+      calculateShapeAppearanceRoundRectOrPath();
+    }
   }
 
   private void calculateShapeAppearanceRoundRectOrPath() {
