@@ -31,7 +31,6 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
-import io.material.catalog.R;
 import io.material.catalog.main.MainActivity;
 import org.junit.Before;
 import org.junit.Rule;
@@ -54,7 +53,7 @@ public class CardSwipeDismissFragmentTest {
     Fragment fragment = new CardSwipeDismissFragment();
     activityTestRule.getActivity()
         .getSupportFragmentManager().beginTransaction()
-        .replace(R.id.container, fragment).commit();
+        .replace(io.material.catalog.main.R.id.container, fragment).commit();
   }
 
   @Test
