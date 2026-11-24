@@ -25,9 +25,7 @@ import android.animation.TimeInterpolator;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.PathInterpolator;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.dynamicanimation.animation.SpringForce;
@@ -41,7 +39,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.internal.DoNotInstrument;
-import org.robolectric.shadow.api.Shadow;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Config.OLDEST_SDK)
@@ -97,7 +94,7 @@ public class MotionUtilsTest {
     assertThemeInterpolatorIsInstanceOf(
         R.style.Theme_Material3_DayNight,
         R.attr.motionEasingStandardInterpolator,
-        isAnimationUtilsShadowed() ? LinearInterpolator.class : PathInterpolator.class);
+        PathInterpolator.class);
   }
 
   @Test
@@ -105,7 +102,7 @@ public class MotionUtilsTest {
     assertThemeInterpolatorIsInstanceOf(
         R.style.Theme_Material3_DayNight_CustomInterpolator,
         R.attr.motionEasingStandardInterpolator,
-        isAnimationUtilsShadowed() ? LinearInterpolator.class : PathInterpolator.class);
+        PathInterpolator.class);
   }
 
   @Test
@@ -113,7 +110,7 @@ public class MotionUtilsTest {
     assertThemeInterpolatorIsInstanceOf(
         R.style.Theme_Material3_DayNight_CustomAnimInterpolator,
         R.attr.motionEasingStandardInterpolator,
-        isAnimationUtilsShadowed() ? LinearInterpolator.class : AccelerateInterpolator.class);
+        AccelerateInterpolator.class);
   }
 
   @Test
@@ -169,10 +166,6 @@ public class MotionUtilsTest {
         new DefaultDummyInterpolator());
   }
 
-  private boolean isAnimationUtilsShadowed() {
-    return Shadow.extract(new AnimationUtils()) != null;
-  }
-
   private void createActivityAndSetTheme(int themeId) {
     ApplicationProvider.getApplicationContext().setTheme(themeId);
     activityController = Robolectric.buildActivity(AppCompatActivity.class).create();
@@ -185,7 +178,6 @@ public class MotionUtilsTest {
         MotionUtils.resolveThemeInterpolator(
             activityController.get().getApplicationContext(), attrId, defaultInterpolator);
     assertThat(themeInterpolator).isNotEqualTo(defaultInterpolator);
-    // Robolectric's shadow of Android's AnimationUtils always returns a LinearInterpolator.
     assertThat(themeInterpolator).isInstanceOf(expectedClass);
   }
 

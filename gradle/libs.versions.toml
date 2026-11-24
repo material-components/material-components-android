@@ -43,7 +43,7 @@ guava                                = "33.3.1-android"
 junit                                = "4.13.2"
 kotlinBom                            = "1.8.22"
 mockitoCore                          = "2.25.0"
-robolectric                          = "4.13"
+robolectric                          = "4.17"
 truth                                = "0.45"
 
 [libraries]
