@@ -328,6 +328,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private int lastNestedScrollDy;
 
+  private float lastNestedFlingVelocityY;
+
   private boolean nestedScrolled;
 
   private float hideFriction = HIDE_FRICTION;
@@ -815,6 +817,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       int type) {
     lastNestedScrollDy = 0;
     nestedScrolled = false;
+    lastNestedFlingVelocityY = 0;
     return (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
   }
 
@@ -924,7 +927,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           targetState = STATE_EXPANDED;
         }
       }
-    } else if (hideable && shouldHide(child, getYVelocity())) {
+    } else if (hideable
+        && shouldHide(
+            child,
+            lastNestedFlingVelocityY != 0 ? lastNestedFlingVelocityY : getYVelocity())) {
       targetState = STATE_HIDDEN;
     } else if (lastNestedScrollDy == 0) {
       int currentTop = child.getTop();
@@ -993,9 +999,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       float velocityY) {
 
     if (isNestedScrollingCheckEnabled() && hasScrollingChild()) {
-      return isViewScrollingChild(target)
-          && ((state != STATE_EXPANDED && !draggableOnNestedScrollLastDragIgnored)
-              || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
+      boolean consumed =
+          isViewScrollingChild(target)
+              && ((state != STATE_EXPANDED && !draggableOnNestedScrollLastDragIgnored)
+                  || super.onNestedPreFling(
+                      coordinatorLayout, child, target, velocityX, velocityY));
+      if (consumed) {
+        lastNestedFlingVelocityY = velocityY;
+      }
+      return consumed;
     } else {
       return false;
     }
