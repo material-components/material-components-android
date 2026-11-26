@@ -56,6 +56,10 @@
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
+      android:name=".MaterialAlertDialogActivity"
+      android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+
+    <activity
       android:name=".CoordinatorLayoutActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
