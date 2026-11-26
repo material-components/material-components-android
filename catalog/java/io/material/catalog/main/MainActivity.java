@@ -58,6 +58,8 @@ public class MainActivity extends BaseCatalogActivity {
       tocFragment = new TocFragment();
       getSupportFragmentManager().beginTransaction().add(R.id.container, tocFragment).commit();
     }
+
+    getWindow().getDecorView().getContext().getTheme().setTo(getTheme());
   }
 
   @Override
