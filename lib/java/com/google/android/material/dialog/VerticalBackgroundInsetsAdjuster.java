@@ -20,6 +20,8 @@ import android.app.Dialog;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
@@ -54,6 +56,9 @@ import com.google.android.material.internal.ContextUtils;
  * that already fits, so the configured insets are then restored on its next layout pass; as the
  * insets are transparent, this does not change how a dialog that fits the screen looks. Windows
  * using adjustPan are reliably adjusted on API 30+ only.
+ *
+ * <p>A window background set by the caller after the dialog is created is kept: once the background
+ * of the window is no longer the one applied here, the insets are no longer adjusted.
  */
 final class VerticalBackgroundInsetsAdjuster implements OnLayoutChangeListener {
 
@@ -64,7 +69,9 @@ final class VerticalBackgroundInsetsAdjuster implements OnLayoutChangeListener {
   @NonNull private final Rect currentInsets;
   @NonNull private final Rect visibleFrame = new Rect();
   @NonNull private final Rect activityFrame = new Rect();
+  @Nullable private Drawable appliedBackground;
   private boolean lastImeVisible;
+  private boolean stopped;
 
   VerticalBackgroundInsetsAdjuster(
       @NonNull Dialog dialog,
@@ -93,6 +100,9 @@ final class VerticalBackgroundInsetsAdjuster implements OnLayoutChangeListener {
         decorView,
         (view, insets) -> {
           WindowInsetsCompat result = ViewCompat.onApplyWindowInsets(view, insets);
+          if (stopped) {
+            return result;
+          }
           getVisibleFrame(visibleFrame);
           boolean imeVisible = isImeVisible(view, visibleFrame);
           if (imeVisible != lastImeVisible) {
@@ -114,6 +124,14 @@ final class VerticalBackgroundInsetsAdjuster implements OnLayoutChangeListener {
       int oldTop,
       int oldRight,
       int oldBottom) {
+    if (stopped) {
+      return;
+    }
+    if (!isAppliedBackground(decorView.getBackground())) {
+      stopped = true;
+      decorView.removeOnLayoutChangeListener(this);
+      return;
+    }
     int[] vertical = {configuredInsets.top, configuredInsets.bottom};
     View content = decorView.findViewById(android.R.id.content);
     getVisibleFrame(visibleFrame);
@@ -251,9 +269,36 @@ final class VerticalBackgroundInsetsAdjuster implements OnLayoutChangeListener {
     return desiredHeight;
   }
 
+  /**
+   * Returns whether {@code drawable} is the background applied by {@link #applyInsets}. The decor
+   * view may wrap the window background, e.g. in a {@link LayerDrawable} for a background blur on
+   * API 31+.
+   */
+  private boolean isAppliedBackground(@Nullable Drawable drawable) {
+    if (drawable == null) {
+      return false;
+    }
+    if (drawable == appliedBackground) {
+      return true;
+    }
+    if (drawable instanceof DrawableWrapper) {
+      return isAppliedBackground(((DrawableWrapper) drawable).getDrawable());
+    }
+    if (drawable instanceof LayerDrawable) {
+      LayerDrawable layers = (LayerDrawable) drawable;
+      for (int i = 0; i < layers.getNumberOfLayers(); i++) {
+        if (isAppliedBackground(layers.getDrawable(i))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   private void applyInsets() {
     Rect insets = new Rect(currentInsets);
-    window.setBackgroundDrawable(MaterialDialogs.insetDrawable(background, insets));
+    appliedBackground = MaterialDialogs.insetDrawable(background, insets);
+    window.setBackgroundDrawable(appliedBackground);
     window.getDecorView().setOnTouchListener(new InsetDialogOnTouchListener(dialog, insets));
   }
 
@@ -265,6 +310,11 @@ final class VerticalBackgroundInsetsAdjuster implements OnLayoutChangeListener {
   private void updateInsets() {
     applyInsets();
     View decorView = window.getDecorView();
-    decorView.post(() -> window.setAttributes(window.getAttributes()));
+    decorView.post(
+        () -> {
+          if (dialog.isShowing() && decorView.isAttachedToWindow()) {
+            window.setAttributes(window.getAttributes());
+          }
+        });
   }
 }

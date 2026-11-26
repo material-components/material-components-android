@@ -17,9 +17,13 @@
 package com.google.android.material.dialog;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.Window;
@@ -28,6 +32,7 @@ import android.view.WindowManager.LayoutParams;
 import android.view.WindowMetrics;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -122,8 +127,28 @@ public class MaterialAlertDialogImeTest {
         "insets not restored");
   }
 
+  @Test
+  public void backgroundSetAfterCreate_keyboardShown_backgroundIsKept() throws Throwable {
+    Drawable background = new ColorDrawable(Color.WHITE);
+    showDialogWithTextFields(2, LayoutParams.SOFT_INPUT_ADJUST_RESIZE, background);
+    waitForKeyboard();
+    waitUntilSettled();
+
+    assertSame(
+        "background replaced", background, dialog.get().getWindow().getDecorView().getBackground());
+  }
+
   /** Shows a dialog with text fields and the keyboard; returns the first, focused field. */
   private EditText showDialogWithTextFields(int count, int softInputMode) throws Throwable {
+    return showDialogWithTextFields(count, softInputMode, null);
+  }
+
+  /**
+   * Shows a dialog with text fields and the keyboard, with {@code background} set as the window
+   * background after the dialog is created, if not null; returns the first, focused field.
+   */
+  private EditText showDialogWithTextFields(
+      int count, int softInputMode, @Nullable Drawable background) throws Throwable {
     AtomicReference<EditText> first = new AtomicReference<>();
     activityTestRule.runOnUiThread(() -> {
       MaterialAlertDialogActivity activity = activityTestRule.getActivity();
@@ -150,6 +175,9 @@ public class MaterialAlertDialogImeTest {
               .setBackgroundInsetBottom(inset)
               .create();
       Window window = alertDialog.getWindow();
+      if (background != null) {
+        window.setBackgroundDrawable(background);
+      }
       window.setSoftInputMode(softInputMode);
       dialog.set(alertDialog);
       alertDialog.show();
