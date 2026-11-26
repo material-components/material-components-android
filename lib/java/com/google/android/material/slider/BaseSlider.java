@@ -114,6 +114,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -725,6 +726,32 @@ abstract class BaseSlider<
 
     // If the result is a whole number, it means the value is a multiple of stepSize.
     return Math.abs(Math.round(result) - result) < THRESHOLD;
+  }
+
+  /**
+   * Returns the number of steps between {@code valueFrom} and {@code valueTo}, dividing on the
+   * decimal values because {@code (valueTo - valueFrom) / stepSize} can land just below a whole
+   * number in float arithmetic. valueFrom=-1.5, valueTo=3.7 and stepSize=0.1 is 52 steps, but the
+   * float division gives 51.999996 and casting it to an int silently drops the last tick.
+   */
+  private long getStepCount() {
+    return new BigDecimal(Float.toString(valueTo))
+        .subtract(new BigDecimal(Float.toString(valueFrom)), DECIMAL64)
+        .divide(new BigDecimal(Float.toString(stepSize)), DECIMAL64)
+        .setScale(0, RoundingMode.HALF_UP)
+        .longValue();
+  }
+
+  /**
+   * Returns the value of the tick at {@code stepIndex}. Like {@link #valueLandsOnTick(float)} this
+   * works on the decimal values, so the result lands exactly on the tick instead of drifting.
+   */
+  private float getStepValue(long stepIndex) {
+    return new BigDecimal(Float.toString(valueFrom))
+        .add(
+            new BigDecimal(Float.toString(stepSize)).multiply(BigDecimal.valueOf(stepIndex)),
+            DECIMAL64)
+        .floatValue();
   }
 
   private void validateStepSize() {
@@ -3482,7 +3509,7 @@ abstract class BaseSlider<
 
   private double snapPosition(float position) {
     if (stepSize > 0.0f) {
-      int stepCount = (int) ((valueTo - valueFrom) / stepSize);
+      long stepCount = getStepCount();
       return Math.round(position * stepCount) / (double) stepCount;
     }
 
@@ -3623,6 +3650,13 @@ abstract class BaseSlider<
     // We might need to invert the touch position to get the correct value.
     if (isRtl() || isVertical()) {
       position = 1 - position;
+    }
+
+    if (stepSize > 0.0f) {
+      // Scaling the snapped position back up by the value range loses the tick alignment in float
+      // arithmetic: valueFrom=0.2, valueTo=4.0 and stepSize=0.05 lands on 2.6499999 rather than
+      // 2.65. Rebuild the value from the tick index instead.
+      return getStepValue(Math.round(position * getStepCount()));
     }
     return (float) (position * (valueTo - valueFrom) + valueFrom);
   }
