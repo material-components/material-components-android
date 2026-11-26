@@ -19,7 +19,6 @@ package io.material.catalog.preferences;
 import io.material.catalog.R;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -32,24 +31,13 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasAndroidInjector;
-import dagger.android.support.AndroidSupportInjection;
 import io.material.catalog.preferences.CatalogPreference.Option;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
-import javax.inject.Inject;
 
 /**
  * A fragment to display a bottom sheet for preferences settings.
  */
-public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
-    implements HasAndroidInjector {
-  @Inject
-  BaseCatalogPreferences preferences;
-
-  @Inject DispatchingAndroidInjector<Object> childFragmentInjector;
-
+public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment {
   private final SparseIntArray buttonIdToOptionId = new SparseIntArray();
 
   @NonNull
@@ -60,17 +48,6 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
     return dialog;
   }
 
-  @Override
-  public void onAttach(Context context) {
-    AndroidSupportInjection.inject(this);
-    super.onAttach(context);
-  }
-
-  @Override
-  public AndroidInjector<Object> androidInjector() {
-    return childFragmentInjector;
-  }
-
   @Nullable
   @Override
   public View onCreateView(
@@ -79,7 +56,7 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
       @Nullable Bundle bundle) {
     View container = layoutInflater.inflate(R.layout.mtrl_preferences_dialog, viewGroup, false);
     LinearLayout preferencesLayout = container.findViewById(R.id.preferences_layout);
-    for (CatalogPreference catalogPreference : preferences.getPreferences()) {
+    for (CatalogPreference catalogPreference : new CatalogPreferences().getPreferences()) {
       preferencesLayout.addView(
           createPreferenceView(layoutInflater, preferencesLayout, catalogPreference));
     }
