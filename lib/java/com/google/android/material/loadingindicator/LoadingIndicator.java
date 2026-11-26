@@ -109,8 +109,6 @@ public final class LoadingIndicator extends View implements Drawable.Callback {
     int minHideDelayUncapped = a.getInt(R.styleable.LoadingIndicator_minHideDelay, -1);
     minHideDelay = min(minHideDelayUncapped, MAX_HIDE_DELAY);
     a.recycle();
-
-    setAnimatorDurationScaleProvider(new AnimatorDurationScaleProvider());
   }
 
   /**
