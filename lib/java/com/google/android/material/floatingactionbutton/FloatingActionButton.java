@@ -73,6 +73,7 @@ import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.VisibilityAwareImageButton;
+import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -237,8 +238,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     final float pressedTranslationZ =
         a.getDimension(R.styleable.FloatingActionButton_pressedTranslationZ, 0f);
     compatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
-    int minTouchTargetSize =
-        getResources().getDimensionPixelSize(R.dimen.mtrl_fab_min_touch_target);
 
     setMaxImageSize(a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0));
 
@@ -253,6 +252,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     boolean ensureMinTouchTargetSize =
         a.getBoolean(R.styleable.FloatingActionButton_ensureMinTouchTargetSize, false);
+
+    int minTouchTargetSize =
+        a.getDimensionPixelSize(
+            R.styleable.FloatingActionButton_minTouchTargetSize,
+            MaterialAttributes.resolveMinimumAccessibleTouchTarget(context));
 
     setEnabled(a.getBoolean(R.styleable.FloatingActionButton_android_enabled, true));
 
