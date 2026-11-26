@@ -2528,6 +2528,13 @@ public class TabLayout extends HorizontalScrollView {
 
     private int defaultMaxLines = 2;
 
+    private final OnLayoutChangeListener updateBadgeBoundsOnLayoutChangeListener =
+        (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+          if (v.getVisibility() == VISIBLE) {
+            tryUpdateBadgeDrawableBounds(v);
+          }
+        };
+
     public TabView(@NonNull Context context) {
       super(context);
       updateBackgroundDrawable(context);
@@ -2812,8 +2819,6 @@ public class TabLayout extends HorizontalScrollView {
         updateTextAndIcon(this.textView, this.iconView, /* addDefaultMargins= */ true);
 
         tryUpdateBadgeAnchor();
-        addOnLayoutChangeListener(iconView);
-        addOnLayoutChangeListener(textView);
       } else {
         // Else, we'll see if there is a TextView or ImageView present and update them
         if (customTextView != null || customIconView != null) {
@@ -2839,6 +2844,7 @@ public class TabLayout extends HorizontalScrollView {
           (ImageView)
               LayoutInflater.from(getContext())
                   .inflate(R.layout.design_layout_tab_icon, this, false);
+      iconView.addOnLayoutChangeListener(updateBadgeBoundsOnLayoutChangeListener);
       addView(iconView, 0);
     }
 
@@ -2847,6 +2853,7 @@ public class TabLayout extends HorizontalScrollView {
           (TextView)
               LayoutInflater.from(getContext())
                   .inflate(R.layout.design_layout_tab_text, this, false);
+      textView.addOnLayoutChangeListener(updateBadgeBoundsOnLayoutChangeListener);
       addView(textView);
     }
 
@@ -2879,30 +2886,6 @@ public class TabLayout extends HorizontalScrollView {
         tryRemoveBadgeFromAnchor();
       }
       badgeDrawable = null;
-    }
-
-    private void addOnLayoutChangeListener(@Nullable final View view) {
-      if (view == null) {
-        return;
-      }
-      view.addOnLayoutChangeListener(
-          new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(
-                View v,
-                int left,
-                int top,
-                int right,
-                int bottom,
-                int oldLeft,
-                int oldTop,
-                int oldRight,
-                int oldBottom) {
-              if (view.getVisibility() == VISIBLE) {
-                tryUpdateBadgeDrawableBounds(view);
-              }
-            }
-          });
     }
 
     private void tryUpdateBadgeAnchor() {
