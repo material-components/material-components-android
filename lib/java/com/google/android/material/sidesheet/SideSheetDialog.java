@@ -15,17 +15,17 @@
  */
 package com.google.android.material.sidesheet;
 
-import com.google.android.material.R;
-
-import static com.google.android.material.sidesheet.Sheet.STATE_HIDDEN;
-
 import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+
+import com.google.android.material.R;
 import com.google.android.material.sidesheet.Sheet.StableSheetState;
 
 /**
@@ -42,6 +42,12 @@ public class SideSheetDialog extends SheetDialog<SideSheetCallback> {
   private static final int SIDE_SHEET_DIALOG_DEFAULT_THEME_RES =
       R.style.Theme_Material3_Light_SideSheetDialog;
 
+  @Nullable
+  private SideSheetCallback defaultOnHideCallback;
+
+  @Nullable
+  private SideSheetCallback currentOnHideCallback;
+
   public SideSheetDialog(@NonNull Context context) {
     this(context, 0);
   }
@@ -51,20 +57,75 @@ public class SideSheetDialog extends SheetDialog<SideSheetCallback> {
   }
 
   @Override
-  void addSheetCancelOnHideCallback(
-      Sheet<SideSheetCallback> behavior) {
-    behavior.addCallback(
-        new SideSheetCallback() {
-          @Override
-          public void onStateChanged(@NonNull View sheet, int newState) {
-            if (newState == STATE_HIDDEN) {
-              cancel();
-            }
+  void setDefaultOnHideSheetAction(@NonNull Runnable action) {
+    final Sheet<SideSheetCallback> behavior = getBehavior();
+
+    if (currentOnHideCallback == defaultOnHideCallback) {
+      if (currentOnHideCallback != null) {
+        behavior.removeCallback(currentOnHideCallback);
+      }
+
+      defaultOnHideCallback = createDefaultOnHideCallback(action);
+      currentOnHideCallback = defaultOnHideCallback;
+
+      behavior.addCallback(currentOnHideCallback);
+    } else {
+      defaultOnHideCallback = createDefaultOnHideCallback(action);
+    }
+  }
+
+  @Override
+  void setOneShotOnHideSheetAction(@NonNull Runnable action) {
+    final Sheet<SideSheetCallback> behavior = getBehavior();
+
+    if (currentOnHideCallback != null) {
+      behavior.removeCallback(currentOnHideCallback);
+    }
+
+    currentOnHideCallback = createOneTimeActionOnHideCallback(behavior, action);
+    behavior.addCallback(currentOnHideCallback);
+  }
+
+  @NonNull
+  private SideSheetCallback createDefaultOnHideCallback(@NonNull Runnable action) {
+    return new SideSheetCallback() {
+      @Override
+      public void onStateChanged(@NonNull View sheet, int newState) {
+        if (newState == Sheet.STATE_HIDDEN) {
+          action.run();
+        }
+      }
+
+      @Override
+      public void onSlide(@NonNull View sheet, float slideOffset) {
+      }
+    };
+  }
+
+  @NonNull
+  private SideSheetCallback createOneTimeActionOnHideCallback(
+      Sheet<SideSheetCallback> behavior, @NonNull Runnable action) {
+    return new SideSheetCallback() {
+      @Override
+      public void onStateChanged(@NonNull View sheet, int newState) {
+        if (newState == Sheet.STATE_HIDDEN) {
+          if (currentOnHideCallback != null) {
+            behavior.removeCallback(currentOnHideCallback);
           }
 
-          @Override
-          public void onSlide(@NonNull View sheet, float slideOffset) {}
-        });
+          action.run();
+
+          currentOnHideCallback = defaultOnHideCallback;
+          if (currentOnHideCallback != null) {
+            behavior.addCallback(currentOnHideCallback);
+          }
+        }
+      }
+
+      @Override
+      public void onSlide(@NonNull View sheet, float slideOffset) {
+      }
+    };
   }
 
   @LayoutRes
