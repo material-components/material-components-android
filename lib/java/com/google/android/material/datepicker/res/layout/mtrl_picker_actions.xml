@@ -25,6 +25,20 @@
   android:orientation="horizontal">
 
   <Button
+    android:id="@+id/clear_button"
+    style="?attr/buttonBarNeutralButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:text="@string/mtrl_picker_clear"/>
+
+  <Space
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:visibility="invisible" />
+
+  <Button
     android:id="@+id/cancel_button"
     style="?attr/buttonBarNegativeButtonStyle"
     android:layout_width="wrap_content"
