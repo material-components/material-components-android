@@ -239,9 +239,9 @@ public final class DrawableUtils {
    * @param bottomLayerDrawable the drawable to be on the bottom layer
    * @param topLayerDrawable the drawable to be on the top layer
    * @param topLayerDesiredWidth top layer desired width in pixels, or {@link #INTRINSIC_SIZE} to
-   *     use the intrinsic width.
+   *     use the intrinsic width as the desired one.
    * @param topLayerDesiredHeight top layer desired height in pixels, or {@link #INTRINSIC_SIZE} to
-   *     use the intrinsic height.
+   *     use the intrinsic height as the desired one.
    */
   @Nullable
   public static Drawable compositeTwoLayeredDrawable(
@@ -256,8 +256,6 @@ public final class DrawableUtils {
       return bottomLayerDrawable;
     }
 
-    boolean shouldScaleTopLayer =
-        topLayerDesiredWidth != INTRINSIC_SIZE && topLayerDesiredHeight != INTRINSIC_SIZE;
     if (topLayerDesiredWidth == INTRINSIC_SIZE) {
       topLayerDesiredWidth = getTopLayerIntrinsicWidth(bottomLayerDrawable, topLayerDrawable);
     }
@@ -298,10 +296,9 @@ public final class DrawableUtils {
       drawable.setLayerSize(1, topLayerNewWidth, topLayerNewHeight);
       drawable.setLayerGravity(1, Gravity.CENTER);
     } else {
-      if (shouldScaleTopLayer) {
-        topLayerDrawable =
-            new ScaledDrawableWrapper(topLayerDrawable, topLayerNewWidth, topLayerNewHeight);
-      }
+      topLayerDrawable =
+          new ScaledDrawableWrapper(topLayerDrawable, topLayerNewWidth, topLayerNewHeight);
+
       drawable = new LayerDrawable(new Drawable[] {bottomLayerDrawable, topLayerDrawable});
 
       final int horizontalInset =
