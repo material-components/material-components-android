@@ -33,11 +33,7 @@
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
-      android:paddingBottom="@dimen/mtrl_calendar_bottom_padding"
-      android:paddingStart="@dimen/mtrl_calendar_content_padding"
-      android:paddingEnd="@dimen/mtrl_calendar_content_padding"
-      android:paddingLeft="@dimen/mtrl_calendar_content_padding"
-      android:paddingRight="@dimen/mtrl_calendar_content_padding"/>
+      android:paddingBottom="@dimen/mtrl_calendar_bottom_padding"/>
 
     <include
       layout="@layout/mtrl_picker_actions"
